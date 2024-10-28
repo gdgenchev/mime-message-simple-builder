@@ -4,6 +4,7 @@ import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import org.springframework.lang.NonNull;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.web.multipart.MultipartFile;
@@ -12,18 +13,12 @@ public class SimpleMimeMessageBuilder {
 
     private static final String FALLBACK_FILENAME_PREFIX = "file_";
 
-    private JavaMailSender mailSender;
     private String from;
     private String subject;
     private String to;
     private String text;
     private boolean isHtml;
     private List<MultipartFile> files;
-
-    public SimpleMimeMessageBuilder withMailSender(JavaMailSender mailSender) {
-        this.mailSender = mailSender;
-        return this;
-    }
 
     public SimpleMimeMessageBuilder withFrom(String from) {
         this.from = from;
@@ -56,11 +51,7 @@ public class SimpleMimeMessageBuilder {
         return this;
     }
 
-    public MimeMessage build() throws MessagingException {
-        if (mailSender == null) {
-            throw new IllegalStateException("mailSender is not set");
-        }
-
+    public MimeMessage build(@NonNull JavaMailSender mailSender) throws MessagingException {
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, true, StandardCharsets.UTF_8.name());
 

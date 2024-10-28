@@ -28,13 +28,12 @@ MimeMessageHelper setters directly.
 
 ```java
 MimeMessage message = new SimpleMimeMessageBuilder()
-    .withMailSender(mailSender)
     .withFrom("from@example.com")
     .withTo("to@example.com")
     .withSubject("Subject")
     .withHtml("<h1>Email content</h1>") // or .withText("Email content")
     .withFiles(files)
-    .build();
+    .build(mailSender);
 ```
 
 ## Usage
